@@ -1,0 +1,46 @@
+/Users/ZwEin/.pyenv/versions/2.7.11/lib/python2.7/site-packages/sklearn/cross_validation.py:43: DeprecationWarning: This module has been deprecated in favor of the model_selection module into which all the refactored classes and functions are moved. Also note that the interface of the new CV iterators are different from that of this module. This module will be removed in 0.20.
+  "This module will be removed in 0.20.", DeprecationWarning)
+             precision    recall  f1-score   support
+
+    massage       0.95      0.91      0.93        22
+     escort       0.92      1.00      0.96        44
+    job_ads       1.00      0.95      0.97        58
+
+avg / total       0.96      0.96      0.96       124
+
+
+
+
+############################################################
+#  massage error predicted as escort
+############################################################
+      Posted:      Tuesday, June 21, 2016 12:18 PM                                                                     Premium Reiki Experience at the SPA industrey SAFE* Clean* Private *NURU Studio*    2o2-330-3645                           Poster's age: 25              Location:          Kings Park Commack Northport Greenlawn, Long Beach, Long Island            Post ID: 77722372 longisland           Premium Reiki Experience at the SPA industrey SAFE* Clean* Private *NURU Studio* 2o2-330-3645 Clean Private Safe Nuru Studio Call for info NOW 202_33o_3645 - Long Island body rubs - backpage.com Clean Private Safe Nuru Studio Call for info NOW 202_33o_3645 - 25
+
+
+
+############################################################
+#  massage error predicted as escort
+############################################################
+Indulge Yourself in Pure Body Bliss With Michelle Relax your Body and your Mind  Great Special Massage  ShowerJacuzzi  732 2439987 2595 Woodbrige Avenue Edison 08817 Exotic Sensual  Brazilian Michelle 732 243 9987  - South Jersey body rubs - backpage.com       Posted:      Saturday, July 9, 2016 4:10 PM                                                                         Indulge Yourself in Pure Body Bliss With          Michelle         Relax your Body and your Mind   Great Special  Massage  ShowerJacuzzi  732 2439987         2595 Woodbrige Avenue Edison 08817                           Poster's age: 23              Location:          Central Jersey, Edison 2595 Woodbrige Avenue, Jersey Shore, North Jersey, South Jersey            Post ID: 29379593 southjersey          Other ads by this user:         Exotic Sensual  Brazilian Michelle 732 243 9987  - 23
+
+
+
+############################################################
+#  job_ads error predicted as escort
+############################################################
+Welcome ultimatebizassistant.com - BlueHost.com Bluehost - Top rated web hosting provider - Free 1 click installs For blogs, shopping carts, and more. Get a free domain name, real NON-outsourced 24/7 support, and superior speed. web hosting provider php hosting cheap web hosting, Web hosting, domain names, front page hosting, email hosting.  We offer affordable hosting, web hosting provider business web hosting, ecommerce hosting, unix hosting.  Phone support available, Free Domain, and Free Setup.   2012 Bluehost.com. All rights reserved.  
+
+
+
+############################################################
+#  job_ads error predicted as escort
+############################################################
+JAZz@ The Bliss Bar (CC accepted) New Number - Ohio body rubs - backpage.com JAZz@ The Bliss Bar (CC accepted) New Number - 24       Posted:      Saturday, July 2, 2016 12:47 PM                                                                         Hey guys I'm Jazz i tailor each treatment based on your liking even taking the time to adjust to client's comfort level Call and book your session now at The Bliss Bar. A Clean business location. You won't be disappointed      (216) 307-3442 NO TEXT FS  Outcall Available                           Poster's age: 24              Location:          Cleveland, near Euclid i90E            Post ID: 28020888 ohio          Other ads by this user:         Hey guys I'm Jazz i tailor each treatment based on your liking even taking the time to adjust to client's comfort level Call and book your session now at The Bliss Bar. A Clean business location. You won't be disappointed (216) 307-3442 NO TEXT FS Outcall Available
+
+
+
+############################################################
+#  job_ads error predicted as massage
+############################################################
+More bang for your buck | The Economist How new technology is shaking up the oldest business
+[Finished in 1.7s]
