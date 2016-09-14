@@ -2,12 +2,17 @@
 # @Author: ZwEin
 # @Date:   2016-09-13 14:44:46
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-09-13 19:03:41
+# @Last Modified time: 2016-09-13 20:08:48
 
 import os
 import sys
 import csv
 import w2v
+import numpy as np
+import tempfile
+from label_propagation import LabelProp
+from knn import KNNGraph
+from sklearn.semi_supervised import LabelPropagation
 from sklearn.neighbors import NearestNeighbors
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.feature_extraction.text import CountVectorizer
@@ -21,9 +26,9 @@ class WEDC(object):
         self.w2v_model_path = os.path.join(os.path.dirname(__file__), 'w2v_model.bin')
         self.corpus, self.labels = self.load_data()
         self.size = len(self.labels)
-        # self.vectorizer = CountVectorizer(min_df=1)
-        # self.classifier = KNeighborsClassifier(n_neighbors=5, metric='jaccard')
-        # self.rs = cross_validation.ShuffleSplit(self.size, n_iter=1, test_size=.25, random_state=12)
+        self.vectorizer = CountVectorizer(min_df=1)
+        # self.classifier = LabelPropagation()
+        self.rs = cross_validation.ShuffleSplit(self.size, n_iter=1, test_size=.25, random_state=12)
 
     def load_data(self):
         dataset = []
@@ -38,10 +43,64 @@ class WEDC(object):
                 labels.append(label)
         return dataset, labels
 
-    def load(self):
+    def run(self):
+        print 'prepare vectors...'
+        vectors = self.vectorizer.fit_transform(self.corpus).toarray()
+        
+        for train_index, test_index in self.rs:
+            # train_X = [vectors[i] for i in range(self.size) if i in train_index]
+            # train_y = [self.labels[i] for i in range(self.size) if i in train_index]
 
-        w2v.setup_model(input, 
-                        output, 
+            # test_origin = [self.corpus[i] for i in range(self.size) if i in test_index]
+            # test_X = [vectors[i] for i in range(self.size) if i in test_index]
+            # test_y = [self.labels[i] for i in range(self.size) if i in test_index]
+            
+            print 'init data...'
+            X = np.copy(vectors)
+            y = np.copy([int(_) for _ in self.labels])
+            y[test_index] = -1
+
+            print 'prepare data for knn...'
+            graph_input = [[i, X[i], y[i]] for i in range(self.size)]
+            print 'build knn graph'
+            graph = KNNGraph().build(graph_input, n_neighbors=5)
+
+            print 'do label propagation...'
+            labelprop = LabelProp()
+            labelprop.load_data_from_mem(graph)
+            rtn_lp = labelprop.run(eps, iter, clean_result=True)
+            
+            pred_y = [int(_[1] ) for _ in rtn_lp if _[0] in test_index]
+            test_y = [self.labels[i] for i in range(self.size) if i in test_index]
+            
+            # self.classifier.fit(X, y)
+
+            # pred_y = self.classifier.predict(test_X)
+
+            target_names = ['massage', 'escort', 'job_ads']
+            print classification_report(test_y, pred_y, target_names=target_names)
+
+            error_index = [i for i in range(len(test_y)) if test_y[i] != pred_y[i]]
+
+            for idx in error_index:
+                print '\n\n'
+                print '#'*60
+                print '# ', target_names[int(test_y[idx])-2], 'error predicted as', target_names[int(pred_y[idx])-2]
+                print '#'*60
+                print test_origin[idx]
+    
+    """
+    def load_w2v(self):
+
+        _, new_file_path = tempfile.mkstemp()
+        with open(new_file_path, 'wb') as new_file_handler:
+            for data in self.corpus:
+                new_file_handler.write(data + '\n')
+
+        print self.w2v_model_path
+        w2v.setup_model(new_file_path, 
+                        # '/Users/ZwEin/job_works/StudentWork_USC-ISI/projects/experiment/wedc/tests/data/w2v_model.bin',
+                        self.w2v_model_path, 
                         binary=1, 
                         cbow=0, 
                         size=300, 
@@ -52,37 +111,7 @@ class WEDC(object):
                         iter_=5, 
                         min_count=5, 
                         verbose=False)
-
-    def run(self):
-        vectors = self.vectorizer.fit_transform(self.corpus).toarray()
-        
-        """
-        for train_index, test_index in self.rs:
-            train_X = [vectors[i] for i in range(self.size) if i in train_index]
-            train_y = [self.labels[i] for i in range(self.size) if i in train_index]
-
-            test_origin = [self.corpus[i] for i in range(self.size) if i in test_index]
-            test_X = [vectors[i] for i in range(self.size) if i in test_index]
-            text_y = [self.labels[i] for i in range(self.size) if i in test_index]
-
-            self.classifier.fit(train_X, train_y)
-
-            pred_y = self.classifier.predict(test_X)
-
-            target_names = ['massage', 'escort', 'job_ads']
-            print classification_report(text_y, pred_y, target_names=target_names)
-
-            error_index = [i for i in range(len(text_y)) if text_y[i] != pred_y[i]]
-
-            for idx in error_index:
-                print '\n\n'
-                print '#'*60
-                print '# ', target_names[int(text_y[idx])-2], 'error predicted as', target_names[int(pred_y[idx])-2]
-                print '#'*60
-                print test_origin[idx]
-        """
-
-
+    """
 
 if __name__ == '__main__':
     data_path = os.path.join(os.path.dirname(__file__), '..', 'tests', 'data', 'dataset.csv')
