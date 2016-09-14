@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-09-13 14:44:46
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-09-13 20:08:48
+# @Last Modified time: 2016-09-13 23:18:57
 
 import os
 import sys
@@ -51,27 +51,28 @@ class WEDC(object):
             # train_X = [vectors[i] for i in range(self.size) if i in train_index]
             # train_y = [self.labels[i] for i in range(self.size) if i in train_index]
 
-            # test_origin = [self.corpus[i] for i in range(self.size) if i in test_index]
+            test_origin = [self.corpus[i] for i in range(self.size) if i in test_index]
             # test_X = [vectors[i] for i in range(self.size) if i in test_index]
             # test_y = [self.labels[i] for i in range(self.size) if i in test_index]
             
             print 'init data...'
             X = np.copy(vectors)
             y = np.copy([int(_) for _ in self.labels])
-            y[test_index] = -1
+            y[test_index] = 0
 
             print 'prepare data for knn...'
             graph_input = [[i, X[i], y[i]] for i in range(self.size)]
-            print 'build knn graph'
+            print 'build knn graph...'
             graph = KNNGraph().build(graph_input, n_neighbors=5)
 
             print 'do label propagation...'
             labelprop = LabelProp()
             labelprop.load_data_from_mem(graph)
-            rtn_lp = labelprop.run(eps, iter, clean_result=True)
-            
-            pred_y = [int(_[1] ) for _ in rtn_lp if _[0] in test_index]
-            test_y = [self.labels[i] for i in range(self.size) if i in test_index]
+            rtn_lp = labelprop.run(0.00001, 100, clean_result=True)
+            rtn_idx = [int(_[0]) for _ in rtn_lp if _[0] in test_index]
+
+            pred_y = [int(_[1]) for _ in rtn_lp if _[0] in test_index]
+            test_y = [int(self.labels[i]) for i in range(self.size) if i in rtn_idx]
             
             # self.classifier.fit(X, y)
 
@@ -81,6 +82,13 @@ class WEDC(object):
             print classification_report(test_y, pred_y, target_names=target_names)
 
             error_index = [i for i in range(len(test_y)) if test_y[i] != pred_y[i]]
+
+            # for idx in error_index:
+            #     print '\n\n'
+            #     print '#'*60
+            #     print '# ', str(test_y[idx]), 'error predicted as', str(pred_y[idx])
+            #     print '#'*60
+            #     print test_origin[idx]
 
             for idx in error_index:
                 print '\n\n'
