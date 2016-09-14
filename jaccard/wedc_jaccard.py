@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-09-13 14:44:46
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-09-13 15:58:28
+# @Last Modified time: 2016-09-14 13:02:31
 
 import os
 import sys
@@ -59,9 +59,16 @@ class WEDC(object):
             for idx in error_index:
                 print '\n\n'
                 print '#'*60
-                print '# ', target_names[int(text_y[idx])-2], 'error predicted as', target_names[int(pred_y[idx])-2]
+                print '# ', int(text_y[idx]), 'error predicted as', int(pred_y[idx])
                 print '#'*60
                 print test_origin[idx]
+                
+            # for idx in error_index:
+            #     print '\n\n'
+            #     print '#'*60
+            #     print '# ', target_names[int(text_y[idx])-2], 'error predicted as', target_names[int(pred_y[idx])-2]
+            #     print '#'*60
+            #     print test_origin[idx]
 
 
 
