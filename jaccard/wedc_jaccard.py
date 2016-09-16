@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-09-13 14:44:46
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-09-15 21:35:07
+# @Last Modified time: 2016-09-15 21:43:09
 
 import os
 import sys
@@ -10,6 +10,7 @@ import csv
 from sklearn.neighbors import NearestNeighbors
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn import cross_validation
 from sklearn.metrics import classification_report
 
@@ -19,9 +20,14 @@ class WEDC(object):
         self.data_path = data_path
         self.corpus, self.labels = self.load_data()
         self.size = len(self.labels)
-        self.vectorizer = CountVectorizer(min_df=1)
+
+        # self.vectorizer = CountVectorizer(min_df=1)
+        self.vectorizer = TfidfVectorizer(min_df=1)
+
         self.classifier = KNeighborsClassifier(n_neighbors=5, metric='jaccard')
-        self.rs = cross_validation.ShuffleSplit(self.size, n_iter=1, test_size=.90, random_state=12)
+
+
+        self.rs = cross_validation.ShuffleSplit(self.size, n_iter=1, test_size=.25, random_state=12)
 
     def load_data(self):
         dataset = []
