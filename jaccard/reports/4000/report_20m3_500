@@ -1,0 +1,53 @@
+/Users/ZwEin/.pyenv/versions/2.7.11/lib/python2.7/site-packages/sklearn/cross_validation.py:43: DeprecationWarning: This module has been deprecated in favor of the model_selection module into which all the refactored classes and functions are moved. Also note that the interface of the new CV iterators are different from that of this module. This module will be removed in 0.20.
+  "This module will be removed in 0.20.", DeprecationWarning)
+             precision    recall  f1-score   support
+
+    massage       0.90      0.93      0.91        28
+     escort       0.94      1.00      0.97        50
+    job_ads       1.00      0.93      0.97        61
+
+avg / total       0.96      0.96      0.96       139
+
+
+
+
+############################################################
+#  massage error predicted as escort
+############################################################
+Cute Babe Massage! ^*^ SWEET & HOT YOUNG GIRL! ^^ Unforgettable Angel Touch:) - Austin body rubs - backpage.com Cute Babe Massage! ^*^ SWEET & HOT YOUNG GIRL! ^^ Unforgettable Angel Touch:) - 22       Posted:      Monday, June 27, 2016 8:51 PM                                                                         Hello Gentleman Its a great day for a certified therapeutic touch!    Soft Classical & Romantic just to set the mood.      Body Massage/Nuru pricing:    $120 for half and hour  $200 for a full hour    ($300/90MinVIP)Body2Body Nuru+ExtendedRub+BallPlay+EroticHappyEnding 3184141757 3184141757                           Poster's age: 22              Location:          Austin            Post ID: 15401994 austin          Other ads by this user:         Hello Gentleman Its a great day for a certified therapeutic touch! Soft Classical & Romantic just to set the mood. Body Massage/Nuru pricing: $120 for half and hour $200 for a full hour ($300/90MinVIP)Body2Body Nuru+ExtendedRub+BallPlay+EroticHappyEnding 3184141757 3184141757
+
+
+
+############################################################
+#  job_ads error predicted as massage
+############################################################
+Welcome ultimatebizassistant.com - BlueHost.com Bluehost - Top rated web hosting provider - Free 1 click installs For blogs, shopping carts, and more. Get a free domain name, real NON-outsourced 24/7 support, and superior speed. web hosting provider php hosting cheap web hosting, Web hosting, domain names, front page hosting, email hosting.  We offer affordable hosting, web hosting provider business web hosting, ecommerce hosting, unix hosting.  Phone support available, Free Domain, and Free Setup.   2012 Bluehost.com. All rights reserved.  
+
+
+
+############################################################
+#  job_ads error predicted as massage
+############################################################
+ Boost Your ENERGY & MOOD Total Renewal Awaits at REPOSE TUESDAY $60/hr - Springfield body rubs - backpage.com  Boost Your ENERGY & MOOD Total Renewal Awaits at REPOSE TUESDAY $60/hr - 32   Sunless Tanning  & Wellness  694 Park Ave;  Cranston, RI   (401) 390-9689   http://reposewellness.wix.com/sunlesstan       *Swedish Bodywork   *Couples    *Four Hand    *Reflexology   *Steamed Towel     **Try our Sunless tanning system & Wellness retail section!!   Plenty of parking ;   Hours:  M-F 10-8 Weekends 11-7   See  ABOVE  Link for Photo Gallery & further info       We prefer appts for  ALL  Clients;  Repeat Clients  please give a courtesy call to ensure availability!!  Visa/MC Accepted                Location:          Cape Cod, South Coast, Springfield, Tf Green Area/ Providence Area, Worcester           Sunless Tanning & Wellness 694 Park Ave; Cranston, RI (401) 390-9689 http://reposewellness.wix.com/sunlesstan *Swedish Bodywork *Couples *Four Hand *Reflexology *Steamed Towel **Try our Sunless tanning system & Wellness retail section!! Plenty of parking; Hours: M-F 10-8 Weekends 11-7 See ABOVE Link for Photo Gallery & further info We prefer appts for ALL Clients; Repeat Clients please give a courtesy call to ensure availability!! Visa/MC Accepted
+
+
+
+############################################################
+#  job_ads error predicted as escort
+############################################################
+More bang for your buck | The Economist How new technology is shaking up the oldest business
+
+
+
+############################################################
+#  massage error predicted as escort
+############################################################
+      Posted:      Wednesday, June 15, 2016 10:42 AM                                                                         Marie's French Massage and spa - 45  Marie's French spa and massage  French spa and massage   Bonjour! Time to try a nice hot stone massage.  Attractive French therapist  Elegant French decor. Clean, relaxing space. Visit France for an hour!  Relax and soothe your mind, body, and spirit with an understanding masseuse. Hot stone treatment available.  Complimentary wine upon request.  (281)335-1951 http://www.frenchmassage.us  18809 Egret Bay, 77058                           Poster's age: 45              Location:          Galveston            Post ID: 33685768 galveston          Other ads by this user:         Marie's French Massage and spa - 45 Marie's French spa and massage French spa and massage Bonjour! Time to try a nice hot stone massage. Attractive French therapist Elegant French decor. Clean, relaxing space. Visit France for an hour! Relax and soothe your mind, body, and spirit with an understanding masseuse. Hot stone treatment available. Complimentary wine upon request. (281)335-1951 http://www.frenchmassage.us 18809 Egret Bay, 77058 Marie's French Massage and spa - 45 Marie's French Massage and spa - Galveston body rubs - backpage.com
+
+
+
+############################################################
+#  job_ads error predicted as massage
+############################################################
+      <   image 1 of 3   >         body :  fit   height :    5'11 (180cm)   status :  partnered age:  60              I have been a MASTER in the BDSM lifestyle for 30 years. I am looking for a male or female livein to train
+[Finished in 2.4s]
