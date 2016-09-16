@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-09-13 14:44:46
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-09-14 14:35:48
+# @Last Modified time: 2016-09-15 20:54:17
 
 import os
 import sys
@@ -59,7 +59,7 @@ class WEDC(object):
             for idx in error_index:
                 print '\n\n'
                 print '#'*60
-                print '# ', int(text_y[idx]), 'error predicted as', int(pred_y[idx])
+                print '# ', target_names[int(text_y[idx])-2], 'error predicted as', target_names[int(pred_y[idx])-2]
                 print '#'*60
                 print test_origin[idx]
                 
@@ -72,39 +72,44 @@ class WEDC(object):
 
     def run_with_specific_training_data(self):
         vectors = self.vectorizer.fit_transform(self.corpus).toarray()
-        train_index = [i for i in range(self.size) if self.labels[i] != -1]
-        test_index = [i for i in range(self.size) if self.labels[i] == -1]
+        train_index = [i for i in range(self.size) if int(self.labels[i]) != -1]
+        test_index = [i for i in range(self.size) if int(self.labels[i]) == -1]
         
         train_X = [vectors[i] for i in range(self.size) if i in train_index]
         train_y = [self.labels[i] for i in range(self.size) if i in train_index]
 
         test_origin = [self.corpus[i] for i in range(self.size) if i in test_index]
         test_X = [vectors[i] for i in range(self.size) if i in test_index]
-        text_y = [self.labels[i] for i in range(self.size) if i in test_index]
+        # text_y = [self.labels[i] for i in range(self.size) if i in test_index]
 
         self.classifier.fit(train_X, train_y)
 
         pred_y = self.classifier.predict(test_X)
 
         target_names = ['massage', 'escort', 'job_ads']
-        print classification_report(text_y, pred_y, target_names=target_names)
+        # print classification_report(text_y, pred_y, target_names=target_names)
 
-        error_index = [i for i in range(len(text_y)) if text_y[i] != pred_y[i]]
+        # error_index = [i for i in range(len(text_y)) if text_y[i] != pred_y[i]]
 
-        for idx in error_index:
+        for idx in range(len(pred_y)):
             print '\n\n'
             print '#'*60
-            print '# ', int(text_y[idx]), 'error predicted as', int(pred_y[idx])
+            print '# ', 'Predicted as', target_names[int(pred_y[idx])-2]
             print '#'*60
             print test_origin[idx]
 
 
 if __name__ == '__main__':
+    
+    # data_path = os.path.join(os.path.dirname(__file__), '..', 'tests', 'data', 'all_extractions_july_2016_with_500.csv')
+    # data_path = os.path.join(os.path.dirname(__file__), '..', 'tests', 'data', 'all_extractions_july_2016_with_500.csv')
+    # wedc = WEDC(data_path)
+    # wedc.run_with_specific_training_data()
+
     # data_path = os.path.join(os.path.dirname(__file__), '..', 'tests', 'data', 'dataset.csv')
-    data_path = os.path.join(os.path.dirname(__file__), '..', 'tests', 'data', 'all_extractions_july_2016.csv')
+    data_path = os.path.join(os.path.dirname(__file__), '..', 'tests', 'data', '20m3_500.csv')
     wedc = WEDC(data_path)
-    # wedc.run()
-    wedc.run_with_specific_training_data()
+    wedc.run()
 
 
 
