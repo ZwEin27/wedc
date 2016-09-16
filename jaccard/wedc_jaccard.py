@@ -2,11 +2,12 @@
 # @Author: ZwEin
 # @Date:   2016-09-13 14:44:46
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-09-16 15:17:37
+# @Last Modified time: 2016-09-16 15:57:29
 
 import os
 import sys
 import csv
+from random import shuffle
 from sklearn.neighbors import NearestNeighbors
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.feature_extraction.text import CountVectorizer
@@ -180,27 +181,74 @@ class WEDC(object):
             print '#'*60
             print test_origin[idx]
 
+    def run_with_differ_training_percentage(self):
+        vectors = self.vectorizer.fit_transform(self.corpus).toarray()
+        
+        # for train_index, test_index in self.rs:
+        all_index = range(self.size)
 
+        original_train_index = all_index[:552]
+        test_index = all_index[552:]
 
+        # different portion of training index
+        original_train_index_size = len(original_train_index)
 
+        for i in range(1, 10):
+            percent = float(i) / 10.
+
+            print '#'*60
+            print str(int(percent*100))+'%', 'for training'
+            print '#'*60
+
+            train_index_size = int(percent * original_train_index_size)
+            train_index = list(original_train_index)
+            shuffle(train_index)
+            train_index = train_index[:train_index_size]
+
+            train_X = [vectors[i] for i in range(self.size) if i in train_index]
+            train_y = [self.labels[i] for i in range(self.size) if i in train_index]
+
+            test_origin = [self.corpus[i] for i in range(self.size) if i in test_index]
+            test_X = [vectors[i] for i in range(self.size) if i in test_index]
+            text_y = [self.labels[i] for i in range(self.size) if i in test_index]
+
+            self.classifier.fit(train_X, train_y)
+
+            pred_y = self.classifier.predict(test_X)
+
+            target_names = ['massage', 'escort', 'job_ads']
+            print classification_report(text_y, pred_y, target_names=target_names)
+
+            error_index = [i for i in range(len(text_y)) if text_y[i] != pred_y[i]]
+
+            # for idx in error_index:
+            #     print '\n\n'
+            #     print '#'*60
+            #     print '# ', target_names[int(text_y[idx])-2], 'error predicted as', target_names[int(pred_y[idx])-2]
+            #     print '#'*60
+            #     print test_origin[idx]
 
 
 
 if __name__ == '__main__':
-    
-    # data_path = os.path.join(os.path.dirname(__file__), '..', 'tests', 'data', 'all_extractions_july_2016_with_500.csv')
-    data_path = os.path.join(os.path.dirname(__file__), '..', 'tests', 'data', 'all_extractions_july_2016_with_500.csv')
+    data_path = os.path.join(os.path.dirname(__file__), '..', 'tests', 'data', 'train500_test50.csv')    # need to change
     wedc = WEDC(data_path)
-    wedc.run_with_specific_training_data()
+    wedc.run_with_differ_training_percentage()
+    
 
 
+
+
+    # data_path = os.path.join(os.path.dirname(__file__), '..', 'tests', 'data', 'all_extractions_july_2016_with_500.csv')
+    # data_path = os.path.join(os.path.dirname(__file__), '..', 'tests', 'data', 'all_extractions_july_2016_with_500.csv')
+    # wedc = WEDC(data_path)
+    # wedc.run_with_specific_training_data()
 
     # data_path = os.path.join(os.path.dirname(__file__), '..', 'tests', 'data', 'dataset.csv')
     # data_path = os.path.join(os.path.dirname(__file__), '..', 'tests', 'data', '20m3_500.csv')
     # data_path = os.path.join(os.path.dirname(__file__), '..', 'tests', 'data', '20m3.csv')
     # wedc = WEDC(data_path)
     # wedc.run()
-
 
     # data_path = os.path.join(os.path.dirname(__file__), '..', 'tests', 'data', 'dataset.csv')
     # testing_data_path = os.path.join(os.path.dirname(__file__), '..', 'tests', 'data', 'testing.csv')
