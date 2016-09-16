@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-09-13 14:44:46
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-09-15 20:54:17
+# @Last Modified time: 2016-09-15 21:35:07
 
 import os
 import sys
@@ -21,7 +21,7 @@ class WEDC(object):
         self.size = len(self.labels)
         self.vectorizer = CountVectorizer(min_df=1)
         self.classifier = KNeighborsClassifier(n_neighbors=5, metric='jaccard')
-        self.rs = cross_validation.ShuffleSplit(self.size, n_iter=1, test_size=.25, random_state=12)
+        self.rs = cross_validation.ShuffleSplit(self.size, n_iter=1, test_size=.90, random_state=12)
 
     def load_data(self):
         dataset = []
@@ -106,8 +106,11 @@ if __name__ == '__main__':
     # wedc = WEDC(data_path)
     # wedc.run_with_specific_training_data()
 
+
+
     # data_path = os.path.join(os.path.dirname(__file__), '..', 'tests', 'data', 'dataset.csv')
     data_path = os.path.join(os.path.dirname(__file__), '..', 'tests', 'data', '20m3_500.csv')
+    # data_path = os.path.join(os.path.dirname(__file__), '..', 'tests', 'data', '20m3.csv')
     wedc = WEDC(data_path)
     wedc.run()
 
