@@ -11,7 +11,11 @@ Total testing data: 4272
 0.11*50 = 6
 
 
+## Accuracy for 25% testing data
 
+2: 72/77 ~ 93.50%
+3: 6/9 ~ 66.67%
+4: 6/13 ~ 46.15%
 
 
 
