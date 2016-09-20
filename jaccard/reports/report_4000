@@ -10,17 +10,17 @@ Total data: 4248
 ## Massage
 data size: 289
 sample size: = 6
-accuracy: /6 ~ %
+accuracy: 2/6 ~ 33.33%
 
 ## Escort
 data size: 3681
 sample size: 86
-accuracy: /86 ~ %
+accuracy: 80/86 ~ 93.02%
 
 ## Job Ads
 data size: 278
 sample size: 6
-accuracy: /13 ~ %
+accuracy: 9/13 ~ 69.23%
 
 ##################################################################
 # Accuracy for 20% training data
@@ -29,17 +29,17 @@ accuracy: /13 ~ %
 ## Massage
 data size: 362
 sample size: = 8
-accuracy: /8 ~ %
+accuracy: 6/8 ~ 75%
 
 ## Escort
 data size: 3174
 sample size: 74
-accuracy: /74 ~ %
+accuracy: 67/74 ~ 90.54%
 
 ## Job Ads
 data size: 712
 sample size: 16
-accuracy: /16 ~ %
+accuracy: 5/16 ~ 31.25%
 
 ##################################################################
 # Accuracy for 30% training data
@@ -48,18 +48,18 @@ accuracy: /16 ~ %
 ## Massage
 data size: 319
 sample size: 7
-accuracy: /7 ~ %
+accuracy: 5/7 ~ 71.43%
 
 ## Escort
 
 data size: 3549
 sample size: = 83
-accuracy: /3 ~ %
+accuracy: 77/83 ~ 92.77%
 
 ## Job Ads
 data size: 380
 sample size: 8
-accuracy: /8 ~ %
+accuracy: 3/8 ~ 37.5%
 
 ##################################################################
 # Accuracy for 40% training data
@@ -68,7 +68,7 @@ accuracy: /8 ~ %
 ## Massage
 data size: 261
 sample size: = 6
-accuracy: /6 ~ %
+accuracy: 5/6 ~ 83.33%
 
 ## Escort
 data size: 3446
@@ -78,31 +78,26 @@ accuracy: /81 ~ %
 ## Job Ads
 data size: 541
 sample size: 12
-accuracy: /12 ~ %
+accuracy: 4/12 ~ 33.33%
 
 ##################################################################
 # Accuracy for 50% training data
 ##################################################################
 
-70 out of 3005 samples for 3
-9 out of 389 samples for 2
-20 out of 854 samples for 4
-[Finished in 0.2s]
-
 ## Massage
 data size: 389
-sample size: = 70
-accuracy: /70 ~ %
+sample size: = 9
+accuracy: 5/9 ~ 55.56%
 
 ## Escort
 data size: 3005
-sample size: 9
-accuracy: /9 ~ %
+sample size: 70
+accuracy: /70 ~ %
 
 ## Job Ads
 data size: 854
 sample size: 20
-accuracy: /20 ~ %
+accuracy: 10/20 ~ 50%
 
 ##################################################################
 # Accuracy for 60% training data
@@ -111,7 +106,7 @@ accuracy: /20 ~ %
 ## Massage
 data size: 334
 sample size: = 7
-accuracy: /7 ~ %
+accuracy: 6/7 ~ 85.71%
 
 ## Escort
 data size: 3358
@@ -121,7 +116,7 @@ accuracy: /79 ~ %
 ## Job Ads
 data size: 556
 sample size: 13
-accuracy: /13 ~ %
+accuracy: 2/13 ~ 15.38%
 
 ##################################################################
 # Accuracy for 70% training data
@@ -129,18 +124,18 @@ accuracy: /13 ~ %
 
 ## Massage
 data size: 359
-sample size: = 80
-accuracy: /80 ~ %
+sample size: = 8
+accuracy: 5/8 ~ 62.5%
 
 ## Escort
 data size: 3421
-sample size: 8
-accuracy: /8 ~ %
+sample size: 80
+accuracy: /80 ~ %
 
 ## Job Ads
 data size: 468
 sample size: 11
-accuracy: /11 ~ %
+accuracy: 4/11 ~ 36.36%
 
 ##################################################################
 # Accuracy for 75% training data
@@ -167,18 +162,18 @@ accuracy: 6/13 ~ 46.15%
 
 ## Massage
 data size: 375
-sample size: = 75
-accuracy: /75 ~ %
+sample size: = 8
+accuracy: 7/8 ~ 87.5%
 
 ## Escort
 data size: 3205
-sample size: 8
-accuracy: /8 ~ %
+sample size: 75
+accuracy: /75 ~ %
 
 ## Job Ads
 data size: 668
 sample size: 15
-accuracy: /15 ~ %
+accuracy: 8/15 ~ 53.33%
 
 ##################################################################
 # Accuracy for 90% training data
@@ -186,18 +181,18 @@ accuracy: /15 ~ %
 
 ## Massage
 data size: 385
-sample size: = 76
-accuracy: /76 ~ %
+sample size: = 9
+accuracy: 6/9 ~ 66.67%
 
 ## Escort
 data size: 3245
-sample size: 9
-accuracy: /9 ~ %
+sample size: 76
+accuracy: /76 ~ %
 
 ## Job Ads
 data size: 618
 sample size: 14
-accuracy: /14 ~ %
+accuracy: 2/14 ~ 14.29%
 
 
 
