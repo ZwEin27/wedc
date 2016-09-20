@@ -1,21 +1,27 @@
 
-Total testing data: 4272
+Training data size: 551
+Total data: 4248
 
-# Massage: 430 in total
-0.10*50 = 5
+# Accuracy for 75% training data
 
-# Escort: 3353 in total
-0.78*50 = 39
+## Massage
+data size: 430
+sample size: = 9
+accuracy: 6/9 ~ 66.67%
 
-# Job Ads: 489 in total
-0.11*50 = 6
+## Escort
+data size: 3353
+sample size: 77
+accuracy: 72/77 ~ 93.50%
+
+## Job Ads
+data size: 489
+sample size: 6
+accuracy: 6/13 ~ 46.15%
 
 
-## Accuracy for 25% testing data
 
-2: 72/77 ~ 93.50%
-3: 6/9 ~ 66.67%
-4: 6/13 ~ 46.15%
+
 
 
 
