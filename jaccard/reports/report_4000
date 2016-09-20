@@ -27,114 +27,120 @@ accuracy: /13 ~ %
 ##################################################################
 
 ## Massage
-data size: 
-sample size: = 
-accuracy: / ~ %
+data size: 362
+sample size: = 8
+accuracy: /8 ~ %
 
 ## Escort
-data size: 
-sample size: 
-accuracy: / ~ %
+data size: 3174
+sample size: 74
+accuracy: /74 ~ %
 
 ## Job Ads
-data size: 
-sample size: 
-accuracy: / ~ %
+data size: 712
+sample size: 16
+accuracy: /16 ~ %
 
 ##################################################################
 # Accuracy for 30% training data
 ##################################################################
 
 ## Massage
-data size: 
-sample size: = 
-accuracy: / ~ %
+data size: 319
+sample size: 7
+accuracy: /7 ~ %
 
 ## Escort
-data size: 
-sample size: 
-accuracy: / ~ %
+
+data size: 3549
+sample size: = 83
+accuracy: /3 ~ %
 
 ## Job Ads
-data size: 
-sample size: 
-accuracy: / ~ %
+data size: 380
+sample size: 8
+accuracy: /8 ~ %
 
 ##################################################################
 # Accuracy for 40% training data
 ##################################################################
 
 ## Massage
-data size: 
-sample size: = 
-accuracy: / ~ %
+data size: 261
+sample size: = 6
+accuracy: /6 ~ %
 
 ## Escort
-data size: 
-sample size: 
-accuracy: / ~ %
+data size: 3446
+sample size: 81
+accuracy: /81 ~ %
 
 ## Job Ads
-data size: 
-sample size: 
-accuracy: / ~ %
+data size: 541
+sample size: 12
+accuracy: /12 ~ %
 
 ##################################################################
 # Accuracy for 50% training data
 ##################################################################
 
+70 out of 3005 samples for 3
+9 out of 389 samples for 2
+20 out of 854 samples for 4
+[Finished in 0.2s]
+
 ## Massage
-data size: 
-sample size: = 
-accuracy: / ~ %
+data size: 389
+sample size: = 70
+accuracy: /70 ~ %
 
 ## Escort
-data size: 
-sample size: 
-accuracy: / ~ %
+data size: 3005
+sample size: 9
+accuracy: /9 ~ %
 
 ## Job Ads
-data size: 
-sample size: 
-accuracy: / ~ %
+data size: 854
+sample size: 20
+accuracy: /20 ~ %
 
 ##################################################################
 # Accuracy for 60% training data
 ##################################################################
 
 ## Massage
-data size: 
-sample size: = 
-accuracy: / ~ %
+data size: 334
+sample size: = 7
+accuracy: /7 ~ %
 
 ## Escort
-data size: 
-sample size: 
-accuracy: / ~ %
+data size: 3358
+sample size: 79
+accuracy: /79 ~ %
 
 ## Job Ads
-data size: 
-sample size: 
-accuracy: / ~ %
+data size: 556
+sample size: 13
+accuracy: /13 ~ %
 
 ##################################################################
 # Accuracy for 70% training data
 ##################################################################
 
 ## Massage
-data size: 
-sample size: = 
-accuracy: / ~ %
+data size: 359
+sample size: = 80
+accuracy: /80 ~ %
 
 ## Escort
-data size: 
-sample size: 
-accuracy: / ~ %
+data size: 3421
+sample size: 8
+accuracy: /8 ~ %
 
 ## Job Ads
-data size: 
-sample size: 
-accuracy: / ~ %
+data size: 468
+sample size: 11
+accuracy: /11 ~ %
 
 ##################################################################
 # Accuracy for 75% training data
@@ -160,38 +166,38 @@ accuracy: 6/13 ~ 46.15%
 ##################################################################
 
 ## Massage
-data size: 
-sample size: = 
-accuracy: / ~ %
+data size: 375
+sample size: = 75
+accuracy: /75 ~ %
 
 ## Escort
-data size: 
-sample size: 
-accuracy: / ~ %
+data size: 3205
+sample size: 8
+accuracy: /8 ~ %
 
 ## Job Ads
-data size: 
-sample size: 
-accuracy: / ~ %
+data size: 668
+sample size: 15
+accuracy: /15 ~ %
 
 ##################################################################
 # Accuracy for 90% training data
 ##################################################################
 
 ## Massage
-data size: 
-sample size: = 
-accuracy: / ~ %
+data size: 385
+sample size: = 76
+accuracy: /76 ~ %
 
 ## Escort
-data size: 
-sample size: 
-accuracy: / ~ %
+data size: 3245
+sample size: 9
+accuracy: /9 ~ %
 
 ## Job Ads
-data size: 
-sample size: 
-accuracy: / ~ %
+data size: 618
+sample size: 14
+accuracy: /14 ~ %
 
 
 
