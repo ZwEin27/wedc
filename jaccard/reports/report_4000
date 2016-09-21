@@ -73,7 +73,7 @@ accuracy: 5/6 ~ 83.33%
 ## Escort
 data size: 3446
 sample size: 81
-accuracy: /81 ~ %
+accuracy: 78/81 ~ 96.30%
 
 ## Job Ads
 data size: 541
@@ -92,7 +92,7 @@ accuracy: 5/9 ~ 55.56%
 ## Escort
 data size: 3005
 sample size: 70
-accuracy: /70 ~ %
+accuracy: 68/70 ~ 97.14%
 
 ## Job Ads
 data size: 854
@@ -111,7 +111,7 @@ accuracy: 6/7 ~ 85.71%
 ## Escort
 data size: 3358
 sample size: 79
-accuracy: /79 ~ %
+accuracy: 75/79 ~ 94.94%
 
 ## Job Ads
 data size: 556
@@ -130,7 +130,7 @@ accuracy: 5/8 ~ 62.5%
 ## Escort
 data size: 3421
 sample size: 80
-accuracy: /80 ~ %
+accuracy: 78/80 ~ 97.5%
 
 ## Job Ads
 data size: 468
@@ -168,7 +168,7 @@ accuracy: 7/8 ~ 87.5%
 ## Escort
 data size: 3205
 sample size: 75
-accuracy: /75 ~ %
+accuracy: 74/75 ~ 98.67%
 
 ## Job Ads
 data size: 668
@@ -187,7 +187,7 @@ accuracy: 6/9 ~ 66.67%
 ## Escort
 data size: 3245
 sample size: 76
-accuracy: /76 ~ %
+accuracy: 72/76 ~ 94.74%
 
 ## Job Ads
 data size: 618
