@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-09-13 14:44:46
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-09-19 17:26:58
+# @Last Modified time: 2016-09-20 22:03:07
 
 import os
 import sys
@@ -17,9 +17,16 @@ from sklearn.metrics import classification_report
 
 class WEDC(object):
 
-    def __init__(self, data_path):
+    def __init__(self, data_path, extra_data_paths=None):
         self.data_path = data_path
-        self.corpus, self.labels = self.load_data(filepath=data_path)
+        self.corpus = []
+        self.labels = []
+        # self.corpus, self.labels = self.load_data(filepath=data_path)
+        self.load_data(filepath=data_path)
+        if extra_data_paths:
+            for extra_path in extra_data_paths:
+                self.load_data(filepath=extra_path)
+
         self.size = len(self.labels)
 
         # jaccard and knn
@@ -43,6 +50,10 @@ class WEDC(object):
                 content = row[1].decode('utf-8', 'ignore').encode('ascii', 'ignore')
                 dataset.append(content)
                 labels.append(label)
+
+        self.corpus += dataset
+        self.labels += labels
+
         return dataset, labels
 
     def run(self):
@@ -215,7 +226,8 @@ class WEDC(object):
 
             pred_y = self.classifier.predict(test_X)
 
-            target_names = ['massage', 'escort', 'job_ads']
+            target_names = ['others','massage', 'escort', 'job_ads']
+
             print classification_report(text_y, pred_y, target_names=target_names)
 
             error_index = [i for i in range(len(text_y)) if text_y[i] != pred_y[i]]
@@ -266,13 +278,19 @@ class WEDC(object):
 
 
 if __name__ == '__main__':
+    data_path = os.path.join(os.path.dirname(__file__), '..', 'tests', 'data', 'dataset.csv')
+    extra_data_path = os.path.join(os.path.dirname(__file__), '..', 'tests', 'data', 'sampled_prediction_train_10.csv')
+    wedc = WEDC(data_path, extra_data_paths=[extra_data_path])
+    wedc.run_with_differ_training_percentage()
+
+
     # data_path = os.path.join(os.path.dirname(__file__), '..', 'tests', 'data', 'train500_test50.csv')    # need to change
     # wedc = WEDC(data_path)
     # wedc.run_with_differ_training_percentage()
 
-    data_path = os.path.join(os.path.dirname(__file__), '..', 'tests', 'data', 'all_extractions_july_2016_with_500.csv')
-    wedc = WEDC(data_path)
-    wedc.run_with_specific_training_data_and_differ_training_percentage(percent=.90)
+    # data_path = os.path.join(os.path.dirname(__file__), '..', 'tests', 'data', 'all_extractions_july_2016_with_500.csv')
+    # wedc = WEDC(data_path)
+    # wedc.run_with_specific_training_data_and_differ_training_percentage(percent=.90)
 
 
 
