@@ -2,13 +2,14 @@
 # @Author: ZwEin
 # @Date:   2016-09-13 14:44:46
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-09-21 13:44:51
+# @Last Modified time: 2016-09-21 14:36:36
 
 import os
 import sys
 import csv
 import numpy
 from random import shuffle
+from sklearn.utils import resample
 from sklearn.neighbors import NearestNeighbors
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.feature_extraction.text import CountVectorizer
@@ -205,24 +206,33 @@ class WEDC(object):
         # different portion of training index
         original_train_index_size = len(original_train_index)
 
-        for i in range(1, 10):
-            percent = float(i) / 10.
+        for pi in range(1, 10):
+            percent = float(pi) / 10.
+
 
             print '#'*60
             print str(int(percent*100))+'%', 'for training'
             print '#'*60
+
+            # from sklearn.cross_validation import KFold
+
+            # kf = KFold(original_train_index_size, n_folds=)
+
 
             precision = []
             recall = []
             fscore = []
             support = []
 
-            for j in range(10):
-                train_index_size = int(percent * original_train_index_size)
-                train_index = list(original_train_index)
-                shuffle(train_index)
-                train_index = train_index[:train_index_size]
+            original_train_index = resample(original_train_index, replace=False, random_state=None)
+            original_train_index_inner_size = int(percent * original_train_index_size)
+            train_indexes = [original_train_index[x:x+original_train_index_inner_size] for x in xrange(0, original_train_index_size, original_train_index_inner_size) if len(original_train_index[x:x+original_train_index_inner_size]) >= original_train_index_inner_size]
 
+            print 'training data size:', original_train_index_inner_size, 'out of', original_train_index_size
+
+            print ''
+
+            for train_index in train_indexes:
                 train_X = [vectors[i] for i in range(self.size) if i in train_index]
                 train_y = [self.labels[i] for i in range(self.size) if i in train_index]
 
@@ -290,13 +300,8 @@ class WEDC(object):
                 str(round(fmean[2], 2)).rjust(8),'|',str(round(fstd[2], 5)).ljust(9), \
                 str(int(smean[2])).center(20)
 
-
-            # print '    escort       ', round(pmean[1], 2), '|', round(pstd[1], 5), '      ', round(rmean[1], 2), '|', round(rstd[1], 5), '      ', round(fmean[1], 2), '|', round(fstd[1], 5), '      ', int(smean[1])
-            # print '    job_ads       ', round(pmean[2], 2), '|', round(pstd[2], 5), '      ', round(rmean[2], 2), '|', round(rstd[2], 5), '      ', round(fmean[2], 2), '|', round(fstd[2], 5), '      ', int(smean[2])
-            
-
-
-            # print classification_report(text_y, pred_y, target_names=target_names)
+            print ''
+            print classification_report(text_y, pred_y, target_names=target_names)
 
             error_index = [i for i in range(len(text_y)) if text_y[i] != pred_y[i]]
 
@@ -385,6 +390,11 @@ if __name__ == '__main__':
     # wedc.run_test()
 
 
-
+# with
+# for j in range(10):
+#     train_index_size = int(percent * original_train_index_size)
+#     train_index = list(original_train_index)
+#     shuffle(train_index)
+#     train_index = train_index[:train_index_size]
 
 
