@@ -2,11 +2,12 @@
 # @Author: ZwEin
 # @Date:   2016-09-13 14:44:46
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-09-20 22:03:07
+# @Last Modified time: 2016-09-21 13:44:51
 
 import os
 import sys
 import csv
+import numpy
 from random import shuffle
 from sklearn.neighbors import NearestNeighbors
 from sklearn.neighbors import KNeighborsClassifier
@@ -14,6 +15,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn import cross_validation
 from sklearn.metrics import classification_report
+from sklearn.metrics import precision_recall_fscore_support
 
 class WEDC(object):
 
@@ -210,25 +212,91 @@ class WEDC(object):
             print str(int(percent*100))+'%', 'for training'
             print '#'*60
 
-            train_index_size = int(percent * original_train_index_size)
-            train_index = list(original_train_index)
-            shuffle(train_index)
-            train_index = train_index[:train_index_size]
+            precision = []
+            recall = []
+            fscore = []
+            support = []
 
-            train_X = [vectors[i] for i in range(self.size) if i in train_index]
-            train_y = [self.labels[i] for i in range(self.size) if i in train_index]
+            for j in range(10):
+                train_index_size = int(percent * original_train_index_size)
+                train_index = list(original_train_index)
+                shuffle(train_index)
+                train_index = train_index[:train_index_size]
 
-            test_origin = [self.corpus[i] for i in range(self.size) if i in test_index]
-            test_X = [vectors[i] for i in range(self.size) if i in test_index]
-            text_y = [self.labels[i] for i in range(self.size) if i in test_index]
+                train_X = [vectors[i] for i in range(self.size) if i in train_index]
+                train_y = [self.labels[i] for i in range(self.size) if i in train_index]
 
-            self.classifier.fit(train_X, train_y)
+                test_origin = [self.corpus[i] for i in range(self.size) if i in test_index]
+                test_X = [vectors[i] for i in range(self.size) if i in test_index]
+                text_y = [self.labels[i] for i in range(self.size) if i in test_index]
 
-            pred_y = self.classifier.predict(test_X)
+                self.classifier.fit(train_X, train_y)
 
-            target_names = ['others','massage', 'escort', 'job_ads']
+                pred_y = self.classifier.predict(test_X)
 
-            print classification_report(text_y, pred_y, target_names=target_names)
+                target_names = ['massage', 'escort', 'job_ads']
+
+                tmp_precision, tmp_recall, tmp_fscore, tmp_support = precision_recall_fscore_support(text_y, pred_y)
+
+                precision.append(tmp_precision)
+                recall.append(tmp_recall)
+                fscore.append(tmp_fscore)
+                support.append(tmp_support)
+
+                # print tmp_precision
+
+            # print precision
+            # print numpy.array(precision)
+            # print numpy.mean(precision, axis=0)
+
+            precision = numpy.array(precision)
+            recall = numpy.array(recall)
+            fscore = numpy.array(fscore)
+            support = numpy.array(support)
+
+
+            pmean = numpy.mean(precision, axis=0)
+            rmean = numpy.mean(recall, axis=0)
+            fmean = numpy.mean(fscore, axis=0)
+            smean = numpy.mean(support, axis=0)
+
+            pstd = numpy.std(numpy.array(precision), axis=0)
+            rstd = numpy.std(numpy.array(recall), axis=0)
+            fstd = numpy.std(numpy.array(fscore), axis=0)
+
+            # print '                         precision           recall           f1-score           support'
+
+            print '                  '.ljust(10), \
+                'precision'. center(20), \
+                'recall'.center(20), \
+                'f1-score'.center(20), \
+                'support'.center(20)
+
+            print '    massage       ', \
+                str(round(pmean[0], 2)).rjust(8),'|',str(round(pstd[0], 5)).ljust(9), \
+                str(round(rmean[0], 2)).rjust(8),'|',str(round(rstd[0], 5)).ljust(9), \
+                str(round(fmean[0], 2)).rjust(8),'|',str(round(fstd[0], 5)).ljust(9), \
+                str(int(smean[0])).center(20)
+
+            print '     escort       ', \
+                str(round(pmean[1], 2)).rjust(8),'|',str(round(pstd[1], 5)).ljust(9), \
+                str(round(rmean[1], 2)).rjust(8),'|',str(round(rstd[1], 5)).ljust(9), \
+                str(round(fmean[1], 2)).rjust(8),'|',str(round(fstd[1], 5)).ljust(9), \
+                str(int(smean[1])).center(20)
+
+            print '    job_ads       ', \
+                str(round(pmean[2], 2)).rjust(8),'|',str(round(pstd[2], 5)).ljust(9), \
+                str(round(rmean[2], 2)).rjust(8),'|',str(round(rstd[2], 5)).ljust(9), \
+                str(round(fmean[2], 2)).rjust(8),'|',str(round(fstd[2], 5)).ljust(9), \
+                str(int(smean[2])).center(20)
+
+
+            # print '    escort       ', round(pmean[1], 2), '|', round(pstd[1], 5), '      ', round(rmean[1], 2), '|', round(rstd[1], 5), '      ', round(fmean[1], 2), '|', round(fstd[1], 5), '      ', int(smean[1])
+            # print '    job_ads       ', round(pmean[2], 2), '|', round(pstd[2], 5), '      ', round(rmean[2], 2), '|', round(rstd[2], 5), '      ', round(fmean[2], 2), '|', round(fstd[2], 5), '      ', int(smean[2])
+            
+
+
+            # print classification_report(text_y, pred_y, target_names=target_names)
 
             error_index = [i for i in range(len(text_y)) if text_y[i] != pred_y[i]]
 
@@ -278,15 +346,15 @@ class WEDC(object):
 
 
 if __name__ == '__main__':
-    data_path = os.path.join(os.path.dirname(__file__), '..', 'tests', 'data', 'dataset.csv')
-    extra_data_path = os.path.join(os.path.dirname(__file__), '..', 'tests', 'data', 'sampled_prediction_train_10.csv')
-    wedc = WEDC(data_path, extra_data_paths=[extra_data_path])
-    wedc.run_with_differ_training_percentage()
-
-
-    # data_path = os.path.join(os.path.dirname(__file__), '..', 'tests', 'data', 'train500_test50.csv')    # need to change
-    # wedc = WEDC(data_path)
+    # data_path = os.path.join(os.path.dirname(__file__), '..', 'tests', 'data', 'dataset.csv')
+    # extra_data_path = os.path.join(os.path.dirname(__file__), '..', 'tests', 'data', 'sampled_prediction_train_10.csv')
+    # wedc = WEDC(data_path, extra_data_paths=[extra_data_path])
     # wedc.run_with_differ_training_percentage()
+
+
+    data_path = os.path.join(os.path.dirname(__file__), '..', 'tests', 'data', 'train500_test50.csv')    # need to change
+    wedc = WEDC(data_path)
+    wedc.run_with_differ_training_percentage()
 
     # data_path = os.path.join(os.path.dirname(__file__), '..', 'tests', 'data', 'all_extractions_july_2016_with_500.csv')
     # wedc = WEDC(data_path)
