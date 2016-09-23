@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-09-23 12:58:37
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-09-23 13:21:57
+# @Last Modified time: 2016-09-23 13:49:05
 
 import os
 import sys
@@ -84,9 +84,51 @@ class WEDC(object):
     # Run Methods
     ##################################################################
 
-    def run(self, train_data_path=None, test_data_path=None, train_test_split=.25):
+    def __run_specific_train_test_data(train_data_path, test_data_path):
+        train_data_corpus, train_data_labels = self.load_data(filepath=train_data_path)
+        test_data_corpus, test_data_labels = self.load_data(filepath=test_data_path)
 
-        pass
+        train_data_size = len(train_data_labels)
+        test_data_size = len(test_data_labels)
+
+        train_index = range(train_data_size)
+        test_index = range(train_data_size, test_data_size)
+
+        corpus = train_data_corpus + test_data_corpus
+        labels = train_data_labels + test_data_labels
+        size = train_data_size + test_data_size
+
+        return corpus, labels, size, train_index, test_index
+
+        
+
+    def run(self, train_data_path=None, test_data_path=None, train_test_split=.25, random_state=None, n_iter=1):
+
+        corpus = []
+        labels = []
+        size = 0
+        train_index = []
+        test_index = []
+
+        if train_data_path and test_data_path:
+            corpus, labels, size, train_index, test_index = self.__run_specific_train_test_data(train_data_path, test_data_path)
+
+        elif not train_data_path and not test_data_path:
+            corpus = self.corpus
+            labels = self.labels
+            size = self.size
+
+            for train_index, test_index in cross_validation.ShuffleSplit(size, n_iter=n_iter, test_size=train_test_split, random_state=random_state):
+
+
+
+        else:
+            raise Exception('incorrect format')
+
+        vectors = self.vectorizer.fit_transform(corpus).toarray()
+
+
+
         
 
 
