@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-09-23 12:58:37
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-09-23 13:53:53
+# @Last Modified time: 2016-09-23 14:00:59
 
 import os
 import sys
@@ -23,7 +23,7 @@ from sklearn.metrics import precision_recall_fscore_support
 ##################################################################
 
 DC_CATEGORY_DICT = {
-    'unknown': -1
+    'unknown': -1,
     'others': 1,
     'massage': 2,
     'escort': 3,
@@ -71,7 +71,7 @@ class WEDC(object):
         } 
         return vectorizers[handler_type]
 
-    def load_classifier(self, handler_type='knn', **kwargs)
+    def load_classifier(self, handler_type='knn', **kwargs):
         classifiers = {
             'knn': KNeighborsClassifier( \
                         weights=kwargs.get('weights', 'distance'), \
@@ -84,7 +84,7 @@ class WEDC(object):
     # Run Methods
     ##################################################################
 
-    def __run_specific_train_test_data(train_data_path, test_data_path):
+    def __run_specific_train_test_data(self, train_data_path, test_data_path):
         train_data_corpus, train_data_labels = self.load_data(filepath=train_data_path)
         test_data_corpus, test_data_labels = self.load_data(filepath=test_data_path)
 
@@ -99,10 +99,21 @@ class WEDC(object):
         size = train_data_size + test_data_size
 
         vectors = self.vectorizer.fit_transform(corpus).toarray()
+        test_origin = [corpus[i] for i in range(size) if i in test_index]
+
+        train_X = [vectors[i] for i in range(size) if i in train_index]
+        train_y = [labels[i] for i in range(size) if i in train_index]
+        test_X = [vectors[i] for i in range(size) if i in test_index]
+        text_y = [labels[i] for i in range(size) if i in test_index]
+
+        self.classifier.fit(train_X, train_y)
+        pred_y = self.classifier.predict(test_X)
+
+
 
         # return corpus, labels, size, train_index, test_index
 
-    def __run_split_train_test_data(train_test_split=.25, random_state=None, n_iter=1):
+    def __run_split_train_test_data(self, train_test_split=.25, random_state=None, n_iter=1):
         corpus = self.corpus
         labels = self.labels
         size = self.size
@@ -127,6 +138,15 @@ class WEDC(object):
             raise Exception('incorrect format')
 
 
+
+
+if __name__ == '__main__':
+    dc = WEDC(vectorizer_type='count', classifier_type='knn')
+
+
+    train_path = '/Users/ZwEin/job_works/StudentWork_USC-ISI/projects/dig-groundtruth-data/classification/training-data/dig_memex_eval_datasets.csv'
+    test_path = '/Users/ZwEin/job_works/StudentWork_USC-ISI/projects/dig-groundtruth-data/classification/testing-data/testing_data.csv'
+    dc.run(train_data_path=train_path, test_data_path=test_path)
 
         
 
