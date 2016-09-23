@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-09-23 12:58:37
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-09-23 13:17:56
+# @Last Modified time: 2016-09-23 13:21:57
 
 import os
 import sys
@@ -43,7 +43,10 @@ class WEDC(object):
         self.size = 0
 
         if data_path:
-            self.load_data(filepath=data_path)
+            new_corpus, new_labels = self.load_data(filepath=data_path)
+            self.corpus += new_corpus
+            self.labels += new_labels
+            self.size += len(new_labels)
 
         self.vectorizer = self.load_vectorizer(handler_type=vectorizer_type, binary=True)
         self.classifier = self.load_classifier(handler_type=classifier_type, weights='distance', n_neighbors=5, metric='jaccard')
@@ -59,9 +62,6 @@ class WEDC(object):
                 content = row[1].decode('utf-8', 'ignore').encode('ascii', 'ignore')
                 dataset.append(content)
                 labels.append(label)
-        self.corpus += dataset
-        self.labels += labels
-        self.size += len(labels)
         return dataset, labels
 
     def load_vectorizer(self, handler_type='count', **kwargs):
@@ -84,8 +84,9 @@ class WEDC(object):
     # Run Methods
     ##################################################################
 
+    def run(self, train_data_path=None, test_data_path=None, train_test_split=.25):
 
-
+        pass
         
 
 
