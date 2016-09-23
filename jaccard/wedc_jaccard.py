@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-09-13 14:44:46
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-09-22 14:38:22
+# @Last Modified time: 2016-09-23 12:55:25
 
 import os
 import sys
@@ -21,6 +21,7 @@ from sklearn.metrics import precision_recall_fscore_support
 class WEDC(object):
 
     def __init__(self, data_path, extra_data_paths=None):
+
         self.data_path = data_path
         self.corpus = []
         self.labels = []
@@ -235,7 +236,7 @@ class WEDC(object):
 
             print ''
 
-            for j in range(50):
+            for j in range(10):
                 
                 train_index = list(original_train_index)
                 shuffle(train_index)
@@ -366,7 +367,9 @@ if __name__ == '__main__':
     # wedc.run_with_differ_training_percentage()
 
 
-    data_path = os.path.join(os.path.dirname(__file__), '..', 'tests', 'data', 'train500_test50.csv')    # need to change
+    # data_path = os.path.join(os.path.dirname(__file__), '..', 'tests', 'data', 'train500_test50.csv')
+    
+    data_path = os.path.join(os.path.dirname(__file__), '..', 'tests', 'data', 'train494_test695.csv')
     wedc = WEDC(data_path)
     wedc.run_with_differ_training_percentage()
 
