@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-09-13 14:44:46
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-09-23 12:55:25
+# @Last Modified time: 2016-09-24 14:11:26
 
 import os
 import sys
@@ -313,7 +313,7 @@ class WEDC(object):
             # print ''
             # print classification_report(text_y, pred_y, target_names=target_names)
 
-            error_index = [i for i in range(len(text_y)) if text_y[i] != pred_y[i]]
+            # error_index = [i for i in range(len(text_y)) if text_y[i] != pred_y[i]]
 
             # for idx in error_index:
             #     print '\n\n'

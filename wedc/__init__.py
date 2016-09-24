@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-09-23 12:58:37
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-09-24 13:59:03
+# @Last Modified time: 2016-09-24 14:11:37
 
 import os
 import sys
@@ -131,14 +131,51 @@ class WEDC(object):
             
             test_origin = [corpus[i] for i in range(size) if i in test_index]
 
-            train_X = [vectors[i] for i in range(size) if i in train_index]
-            train_y = [int(labels[i]) for i in range(size) if i in train_index]
+            # train_X = [vectors[i] for i in range(size) if i in train_index]
+            # train_y = [int(labels[i]) for i in range(size) if i in train_index]
             test_X = [vectors[i] for i in range(size) if i in test_index]
             text_y = [int(labels[i]) for i in range(size) if i in test_index]
 
             self.classifier.fit(train_X, train_y)
             pred_y = self.classifier.predict(test_X)
             # pred_proba_y = self.classifier.predict_proba(test_X)
+            
+            for pi in range(1, 11):
+                percent = float(pi) / 10.
+                precision = []
+                recall = []
+                fscore = []
+                support = []
+
+                cur_train_index = list(train_index)
+                cur_train_index.shuffle()
+                train_index_size = int(percent * len(cur_train_index))
+
+                for j in range(10):
+                    train_index = list(cur_train_index)
+                    shuffle(train_index)
+                    train_index = train_index[:train_index_size]
+
+                    train_X = [vectors[i] for i in range(self.size) if i in train_index]
+                    train_y = [self.labels[i] for i in range(self.size) if i in train_index]
+
+                    # test_origin = [self.corpus[i] for i in range(self.size) if i in test_index]
+                    # test_X = [vectors[i] for i in range(self.size) if i in test_index]
+                    # text_y = [self.labels[i] for i in range(self.size) if i in test_index]
+
+                    self.classifier.fit(train_X, train_y)
+
+                    pred_y = self.classifier.predict(test_X)
+
+                    tmp_precision, tmp_recall, tmp_fscore, tmp_support = precision_recall_fscore_support(text_y, pred_y)
+
+                    precision.append(tmp_precision)
+                    recall.append(tmp_recall)
+                    fscore.append(tmp_fscore)
+                    support.append(tmp_support)
+
+
+
         
         return text_y, pred_y, None
 
@@ -160,6 +197,44 @@ class WEDC(object):
     # Statistic Report Methods
     ##################################################################
     
+    def display_avg_std(self, precision, recall, fscore, support):
+        precision = numpy.array(precision)
+        recall = numpy.array(recall)
+        fscore = numpy.array(fscore)
+        support = numpy.array(support)
+
+        pmean = numpy.mean(precision, axis=0)
+        rmean = numpy.mean(recall, axis=0)
+        fmean = numpy.mean(fscore, axis=0)
+        smean = numpy.mean(support, axis=0)
+
+        pstd = numpy.std(numpy.array(precision), axis=0)
+        rstd = numpy.std(numpy.array(recall), axis=0)
+        fstd = numpy.std(numpy.array(fscore), axis=0)
+
+        print '                  '.ljust(10), \
+            'precision'. center(20), \
+            'recall'.center(20), \
+            'f1-score'.center(20), \
+            'support'.center(20)
+
+        print '    massage       ', \
+            str(round(pmean[0], 2)).rjust(8),'|',str(round(pstd[0], 5)).ljust(9), \
+            str(round(rmean[0], 2)).rjust(8),'|',str(round(rstd[0], 5)).ljust(9), \
+            str(round(fmean[0], 2)).rjust(8),'|',str(round(fstd[0], 5)).ljust(9), \
+            str(int(smean[0])).center(20)
+
+        print '     escort       ', \
+            str(round(pmean[1], 2)).rjust(8),'|',str(round(pstd[1], 5)).ljust(9), \
+            str(round(rmean[1], 2)).rjust(8),'|',str(round(rstd[1], 5)).ljust(9), \
+            str(round(fmean[1], 2)).rjust(8),'|',str(round(fstd[1], 5)).ljust(9), \
+            str(int(smean[1])).center(20)
+
+        print '    job_ads       ', \
+            str(round(pmean[2], 2)).rjust(8),'|',str(round(pstd[2], 5)).ljust(9), \
+            str(round(rmean[2], 2)).rjust(8),'|',str(round(rstd[2], 5)).ljust(9), \
+            str(round(fmean[2], 2)).rjust(8),'|',str(round(fstd[2], 5)).ljust(9), \
+            str(int(smean[2])).center(20)
 
 
     ##################################################################
@@ -234,6 +309,6 @@ if __name__ == '__main__':
     ## Only one data path provided
     data_path = '/Users/ZwEin/job_works/StudentWork_USC-ISI/projects/dig-groundtruth-data/classification/testing-data/testing_data.csv'
     dc = WEDC(data_path=data_path, vectorizer_type='count', classifier_type='knn')
-    dc.run(train_test_split=.25, random_state=None, n_iter=1)
+    dc.run(train_test_split=.25, random_state=23, n_iter=1)
 
 
