@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-09-23 12:58:37
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-09-24 14:21:07
+# @Last Modified time: 2016-09-24 14:31:09
 
 import os
 import sys
@@ -121,10 +121,46 @@ class WEDC(object):
     def __run_split_train_test_data_full_train(self, vectors, labels, train_index, test_index):
         pass
 
-    def __run_split_train_test_data_part_train(self, vectors, labels, train_index, test_index):
-        pass
+    def __run_split_train_test_data_part_train(self, vectors, labels, original_train_index, original_test_index):
 
-    def __run_split_train_test_data(self, train_test_split=.25, random_state=None, n_iter=1):
+        test_X = [vectors[i] for i in range(size) if i in original_test_index]
+        text_y = [int(labels[i]) for i in range(size) if i in original_test_index]
+
+        self.classifier.fit(train_X, train_y)
+        pred_y = self.classifier.predict(test_X)
+        # pred_proba_y = self.classifier.predict_proba(test_X)
+        
+        for pi in range(1, 11):
+            percent = float(pi) / 10.
+            precision = []
+            recall = []
+            fscore = []
+            support = []
+
+            train_index_size = int(percent * len(train_index))
+            original_train_index.shuffle()
+            
+
+            for j in range(10):
+                train_index = list(original_train_index)
+                shuffle(train_index)
+                train_index = train_index[:train_index_size]
+
+                train_X = [vectors[i] for i in range(self.size) if i in train_index]
+                train_y = [self.labels[i] for i in range(self.size) if i in train_index]
+
+                self.classifier.fit(train_X, train_y)
+
+                pred_y = self.classifier.predict(test_X)
+
+                tmp_precision, tmp_recall, tmp_fscore, tmp_support = precision_recall_fscore_support(text_y, pred_y)
+
+                precision.append(tmp_precision)
+                recall.append(tmp_recall)
+                fscore.append(tmp_fscore)
+                support.append(tmp_support)
+
+    def __run_split_train_test_data(self, train_test_split=.25, random_state=None, n_iter=1, use_full_train_data=True):
         corpus = self.corpus
         labels = self.labels
         size = self.size
@@ -133,63 +169,20 @@ class WEDC(object):
 
         for train_index, test_index in cross_validation.ShuffleSplit(size, n_iter=n_iter, test_size=train_test_split, random_state=random_state):
 
-            
-            test_origin = [corpus[i] for i in range(size) if i in test_index]
-
-            # train_X = [vectors[i] for i in range(size) if i in train_index]
-            # train_y = [int(labels[i]) for i in range(size) if i in train_index]
-            test_X = [vectors[i] for i in range(size) if i in test_index]
-            text_y = [int(labels[i]) for i in range(size) if i in test_index]
-
-            self.classifier.fit(train_X, train_y)
-            pred_y = self.classifier.predict(test_X)
-            # pred_proba_y = self.classifier.predict_proba(test_X)
-            
-            for pi in range(1, 11):
-                percent = float(pi) / 10.
-                precision = []
-                recall = []
-                fscore = []
-                support = []
-
-                cur_train_index = list(train_index)
-                cur_train_index.shuffle()
-                train_index_size = int(percent * len(cur_train_index))
-
-                for j in range(10):
-                    train_index = list(cur_train_index)
-                    shuffle(train_index)
-                    train_index = train_index[:train_index_size]
-
-                    train_X = [vectors[i] for i in range(self.size) if i in train_index]
-                    train_y = [self.labels[i] for i in range(self.size) if i in train_index]
-
-                    # test_origin = [self.corpus[i] for i in range(self.size) if i in test_index]
-                    # test_X = [vectors[i] for i in range(self.size) if i in test_index]
-                    # text_y = [self.labels[i] for i in range(self.size) if i in test_index]
-
-                    self.classifier.fit(train_X, train_y)
-
-                    pred_y = self.classifier.predict(test_X)
-
-                    tmp_precision, tmp_recall, tmp_fscore, tmp_support = precision_recall_fscore_support(text_y, pred_y)
-
-                    precision.append(tmp_precision)
-                    recall.append(tmp_recall)
-                    fscore.append(tmp_fscore)
-                    support.append(tmp_support)
-
-
+            if use_full_train_data:
+                self.__run_split_train_test_data_full_train(vectors, labels, train_index, test_index)
+            else:
+                self.__run_split_train_test_data_part_train(vectors, labels, train_index, test_index)
 
         
         return text_y, pred_y, None
 
-    def run(self, train_data_path=None, test_data_path=None, train_test_split=.25, random_state=None, n_iter=1):
+    def run(self, train_data_path=None, test_data_path=None, train_test_split=.25, random_state=None, n_iter=1, use_full_train_data=True):
 
         if train_data_path and test_data_path:
             y_test, y_pred, y_pred_proba = self.__run_specific_train_test_data(train_data_path, test_data_path)
         elif not train_data_path and not test_data_path:
-            y_test, y_pred, y_pred_proba = self.__run_split_train_test_data(train_test_split=train_test_split, random_state=random_state, n_iter=n_iter)
+            y_test, y_pred, y_pred_proba = self.__run_split_train_test_data(train_test_split=train_test_split, random_state=random_state, n_iter=n_iter, use_full_train_data=use_full_train_data)
         else:
             raise Exception('incorrect format')
 
