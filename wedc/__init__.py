@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-09-23 12:58:37
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-09-24 14:11:37
+# @Last Modified time: 2016-09-24 14:21:07
 
 import os
 import sys
@@ -114,11 +114,15 @@ class WEDC(object):
         self.classifier.fit(train_X, train_y)
         pred_y = self.classifier.predict(test_X)
         pred_proba_y = self.classifier.predict_proba(test_X)
-
-        # print pred_y
-        # print pred_proba_y
         
         return text_y, pred_y, pred_proba_y
+
+
+    def __run_split_train_test_data_full_train(self, vectors, labels, train_index, test_index):
+        pass
+
+    def __run_split_train_test_data_part_train(self, vectors, labels, train_index, test_index):
+        pass
 
     def __run_split_train_test_data(self, train_test_split=.25, random_state=None, n_iter=1):
         corpus = self.corpus
@@ -128,6 +132,7 @@ class WEDC(object):
         vectors = self.vectorizer.fit_transform(corpus).toarray()
 
         for train_index, test_index in cross_validation.ShuffleSplit(size, n_iter=n_iter, test_size=train_test_split, random_state=random_state):
+
             
             test_origin = [corpus[i] for i in range(size) if i in test_index]
 
@@ -197,7 +202,7 @@ class WEDC(object):
     # Statistic Report Methods
     ##################################################################
     
-    def display_avg_std(self, precision, recall, fscore, support):
+    def display_avg_std(self, percent, precision, recall, fscore, support):
         precision = numpy.array(precision)
         recall = numpy.array(recall)
         fscore = numpy.array(fscore)
