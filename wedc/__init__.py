@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-09-23 12:58:37
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-09-24 14:31:09
+# @Last Modified time: 2016-09-24 14:47:44
 
 import os
 import sys
@@ -109,26 +109,23 @@ class WEDC(object):
         train_X = [vectors[i] for i in range(size) if i in train_index]
         train_y = [int(labels[i]) for i in range(size) if i in train_index]
         test_X = [vectors[i] for i in range(size) if i in test_index]
-        text_y = [int(labels[i]) for i in range(size) if i in test_index]
+        test_y = [int(labels[i]) for i in range(size) if i in test_index]
 
         self.classifier.fit(train_X, train_y)
         pred_y = self.classifier.predict(test_X)
         pred_proba_y = self.classifier.predict_proba(test_X)
         
-        return text_y, pred_y, pred_proba_y
+        return test_y, pred_y, pred_proba_y
 
 
     def __run_split_train_test_data_full_train(self, vectors, labels, train_index, test_index):
         pass
 
-    def __run_split_train_test_data_part_train(self, vectors, labels, original_train_index, original_test_index):
+    def __run_split_train_test_data_part_train(self, vectors, labels, original_train_index, original_test_index, n_avg_iter=10):
+        size = len(labels)
 
         test_X = [vectors[i] for i in range(size) if i in original_test_index]
-        text_y = [int(labels[i]) for i in range(size) if i in original_test_index]
-
-        self.classifier.fit(train_X, train_y)
-        pred_y = self.classifier.predict(test_X)
-        # pred_proba_y = self.classifier.predict_proba(test_X)
+        test_y = [int(labels[i]) for i in range(size) if i in original_test_index]
         
         for pi in range(1, 11):
             percent = float(pi) / 10.
@@ -137,30 +134,35 @@ class WEDC(object):
             fscore = []
             support = []
 
-            train_index_size = int(percent * len(train_index))
-            original_train_index.shuffle()
+            train_index_size = int(percent * len(original_train_index))
+            shuffle(original_train_index)
             
 
-            for j in range(10):
+            for j in range(n_avg_iter):
                 train_index = list(original_train_index)
                 shuffle(train_index)
                 train_index = train_index[:train_index_size]
 
                 train_X = [vectors[i] for i in range(self.size) if i in train_index]
-                train_y = [self.labels[i] for i in range(self.size) if i in train_index]
+                train_y = [int(self.labels[i]) for i in range(self.size) if i in train_index]
 
                 self.classifier.fit(train_X, train_y)
 
                 pred_y = self.classifier.predict(test_X)
 
-                tmp_precision, tmp_recall, tmp_fscore, tmp_support = precision_recall_fscore_support(text_y, pred_y)
+                tmp_precision, tmp_recall, tmp_fscore, tmp_support = precision_recall_fscore_support(test_y, pred_y)
 
                 precision.append(tmp_precision)
                 recall.append(tmp_recall)
                 fscore.append(tmp_fscore)
                 support.append(tmp_support)
 
-    def __run_split_train_test_data(self, train_test_split=.25, random_state=None, n_iter=1, use_full_train_data=True):
+            self.display_train_avg_std(percent, original_train_index, precision, recall, fscore, support)
+
+
+
+
+    def __run_split_train_test_data(self, train_test_split=.25, random_state=None, n_iter=1, use_full_train_data=True, n_avg_iter=10):
         corpus = self.corpus
         labels = self.labels
         size = self.size
@@ -172,17 +174,15 @@ class WEDC(object):
             if use_full_train_data:
                 self.__run_split_train_test_data_full_train(vectors, labels, train_index, test_index)
             else:
-                self.__run_split_train_test_data_part_train(vectors, labels, train_index, test_index)
+                self.__run_split_train_test_data_part_train(vectors, labels, train_index, test_index, n_avg_iter=n_avg_iter)
 
         
-        return text_y, pred_y, None
-
-    def run(self, train_data_path=None, test_data_path=None, train_test_split=.25, random_state=None, n_iter=1, use_full_train_data=True):
+    def run(self, train_data_path=None, test_data_path=None, train_test_split=.25, random_state=None, n_iter=1, use_full_train_data=True, n_avg_iter=10):
 
         if train_data_path and test_data_path:
             y_test, y_pred, y_pred_proba = self.__run_specific_train_test_data(train_data_path, test_data_path)
         elif not train_data_path and not test_data_path:
-            y_test, y_pred, y_pred_proba = self.__run_split_train_test_data(train_test_split=train_test_split, random_state=random_state, n_iter=n_iter, use_full_train_data=use_full_train_data)
+            self.__run_split_train_test_data(train_test_split=train_test_split, random_state=random_state, n_iter=n_iter, use_full_train_data=use_full_train_data, n_avg_iter=n_avg_iter)
         else:
             raise Exception('incorrect format')
 
@@ -195,20 +195,28 @@ class WEDC(object):
     # Statistic Report Methods
     ##################################################################
     
-    def display_avg_std(self, percent, precision, recall, fscore, support):
-        precision = numpy.array(precision)
-        recall = numpy.array(recall)
-        fscore = numpy.array(fscore)
-        support = numpy.array(support)
+    def display_train_avg_std(self, percent, original_train_index, precision, recall, fscore, support):
+        precision = np.array(precision)
+        recall = np.array(recall)
+        fscore = np.array(fscore)
+        support = np.array(support)
 
-        pmean = numpy.mean(precision, axis=0)
-        rmean = numpy.mean(recall, axis=0)
-        fmean = numpy.mean(fscore, axis=0)
-        smean = numpy.mean(support, axis=0)
+        pmean = np.mean(precision, axis=0)
+        rmean = np.mean(recall, axis=0)
+        fmean = np.mean(fscore, axis=0)
+        smean = np.mean(support, axis=0)
 
-        pstd = numpy.std(numpy.array(precision), axis=0)
-        rstd = numpy.std(numpy.array(recall), axis=0)
-        fstd = numpy.std(numpy.array(fscore), axis=0)
+        pstd = np.std(np.array(precision), axis=0)
+        rstd = np.std(np.array(recall), axis=0)
+        fstd = np.std(np.array(fscore), axis=0)
+
+        train_index_size = int(percent * len(original_train_index))
+
+        print '#'*60
+        print str(int(percent*100))+'%', 'for training'
+        print '#'*60
+        print 'training data size:', train_index_size, 'out of', len(original_train_index)
+        print ''
 
         print '                  '.ljust(10), \
             'precision'. center(20), \
@@ -307,6 +315,6 @@ if __name__ == '__main__':
     ## Only one data path provided
     data_path = '/Users/ZwEin/job_works/StudentWork_USC-ISI/projects/dig-groundtruth-data/classification/testing-data/testing_data.csv'
     dc = WEDC(data_path=data_path, vectorizer_type='count', classifier_type='knn')
-    dc.run(train_test_split=.25, random_state=23, n_iter=1)
+    dc.run(train_test_split=.25, random_state=None, n_iter=1, use_full_train_data=False, n_avg_iter=10)
 
 
